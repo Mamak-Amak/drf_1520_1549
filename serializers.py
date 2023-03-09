@@ -1,11 +1,46 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
+from python_models import Author
 
-from .models import Author
+class AuthorSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=128)
+    birthday_year = serializers.IntegerField()
 
-class AuthorModelSerializer(ModelSerializer):
+def create(self, validated_data):
+    return Author(**validated_data)
 
+def update(self, instance, validated_data):
+    instance.name = validated_data.get('name', instance.name)
+    instance.birthday_year = validated_data.get('birthday_year', instance.birthday_year)
+    return instance
 
-    class Meta:
-        model = Author
-        fields = '__all__'
-        # fields = ('first_name','las',)
+data = {'name': 'Грин', 'birthday_year': 1880}
+serializer = AuthorSerializer(data=data)
+
+serializer.is_valid()
+author = serializer.save()
+data = {'name': 'Александр', 'birthday_year': 1880}
+
+serializer = AuthorSerializer(author, data=data)
+serializer.is_valid()
+
+author = serializer.save()
+data = {'birthday_year': 2000}
+
+serializer = AuthorSerializer(author, data=data, partial=True)
+serializer.is_valid()
+
+author = serializer.save()
+
+class AuthorSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=128)
+    birthday_year = serializers.IntegerField()
+
+def validate_birthday_year(self, value):
+    if value < 0:
+        raise serializers.ValidationError('Год рождения не может быть отрицательным')
+    return value
+
+def validate(self, attrs):
+    if attrs['name'] == 'Пушкин' and attrs['birthday_year'] != 1799:
+        raise serializers.ValidationError('Неверный год рождения Пушкина')
+        return attr
