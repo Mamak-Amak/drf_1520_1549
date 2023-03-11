@@ -1,3 +1,12 @@
+
+from rest_framework.serializers import ModelSerializer
+from .models import Article
+
+class ArticleSerializer(ModelSerializer):
+    class Meta:
+        model = Article
+        fields = '__all__'
+=======
 from rest_framework import serializers
 from python_models import Author
 
@@ -44,3 +53,4 @@ def validate(self, attrs):
     if attrs['name'] == 'Пушкин' and attrs['birthday_year'] != 1799:
         raise serializers.ValidationError('Неверный год рождения Пушкина')
         return attr
+
