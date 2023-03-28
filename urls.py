@@ -1,14 +1,8 @@
-from django.contrib import admin
-from django.urls import path, include
-from rest_framework import routers
-from rest_framework.authtoken import views
-from mainapp.views import AuthorViewSet, BookViewSet
+from django.urls import path
+from .views import UserListAPIView
 
-router = routers.DefaultRouter()
-router.register('authors', AuthorViewSet)
-router.register('books', BookViewSet)
+
+app_name = 'userapp'
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api/', include(router.urls)),
+    path('', UserListAPIView.as_view()),
 ]

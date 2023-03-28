@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'rest_framework'
     'rest_framework.authtoken'
     'corsheaders',
+    'django.contrib.staticfiles',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -154,8 +156,17 @@ REST_FRAMEWORK = {
     'rest_framework.authentication.SessionAuthentication',
     'rest_framework.authentication.TokenAuthentication',
     ]
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+    'DEFAULT_VERSIONING_CLASS':
+    'rest_framework.versioning.QueryParameterVersioning',
+    'DEFAULT_VERSIONING_CLASS':
+    'rest_framework.versioning.AcceptHeaderVersioning,
 ]
 }
 urlpatterns = [
     path('api-token-auth/', views.obtain_auth_token)
+    re_path(r'^api/(?P<version>\d\.\d)/users/$', UserListAPIView.as_view()),
+    path('api/users/0.1', include('userapp.urls', namespace='0.1')),
+    path('api/users/0.2', include('userapp.urls', namespace='0.2')),
 ]
