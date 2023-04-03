@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'django.contrib.staticfiles',
     'drf_yasg',
+    "django.contrib.staticfiles", 
+    "graphene_django"
 ]
 
 MIDDLEWARE = [
@@ -170,3 +172,7 @@ urlpatterns = [
     path('api/users/0.1', include('userapp.urls', namespace='0.1')),
     path('api/users/0.2', include('userapp.urls', namespace='0.2')),
 ]
+
+GRAPHENE = {
+    "SCHEMA": "library.schema.schema"
+}
